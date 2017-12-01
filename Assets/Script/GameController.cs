@@ -33,8 +33,8 @@ public class GameController : MonoBehaviour
     }
 
     public static GameController obj;
-    public static StartingPlayer FirstPlayer = StartingPlayer.ONE;
-    public static DiceType TypeOfDice = DiceType.VIRTUAL;
+    public static StartingPlayer FirstPlayer = StartingPlayer.RANDOM;
+	public static DiceType TypeOfDice = DiceType.VIRTUAL;
 
     public List<List<Tile>> Map;
 
@@ -65,6 +65,8 @@ public class GameController : MonoBehaviour
 
     public GameObject DiceVirtual;
     public GameObject DiceVirtual2;
+
+	public TextMeshProUGUI CurrentPlayerText;
 
 
     private void Awake()
@@ -158,16 +160,18 @@ public class GameController : MonoBehaviour
 
         switch (player)
         {
-            case PlayerNumber.ONE:
-                CurrentPlayerNumber = PlayerNumber.ONE;
-                CurrentPlayer = Player1;
-                Player1.PlayerTurnIndicator.SetOn();
-                break;
-            case PlayerNumber.TWO:
-                CurrentPlayerNumber = PlayerNumber.TWO;
-                CurrentPlayer = Player2;
-                Player2.PlayerTurnIndicator.SetOn();
-                break;
+		case PlayerNumber.ONE:
+			CurrentPlayerNumber = PlayerNumber.ONE;
+			CurrentPlayer = Player1;
+			CurrentPlayerText.SetText ("Red Turn");
+            Player1.PlayerTurnIndicator.SetOn();
+            break;
+        case PlayerNumber.TWO:
+            CurrentPlayerNumber = PlayerNumber.TWO;
+            CurrentPlayer = Player2;
+			CurrentPlayerText.SetText ("Blue Turn");
+            Player2.PlayerTurnIndicator.SetOn();
+            break;
         }
 
         SetTurnState(TurnState.WAITING_FOR_ROLL);
