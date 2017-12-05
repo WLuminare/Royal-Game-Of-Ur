@@ -175,7 +175,7 @@ public class GameController : MonoBehaviour
 				RedPieceCompleted++;
 			} else {
 				if (piece.CurrentTile != null && (piece.CurrentTile.Type == Tile.TileType.NORMAL
-					|| piece.CurrentTile.Type == Tile.TileType.ROLL_AGAIN)) {
+					|| piece.CurrentTile.Type == Tile.TileType.ROLL_AGAIN || piece.CurrentTile.Type == Tile.TileType.SAFE)) {
 					RedPieceOnBoard++;
 				} else if (piece.CurrentTile != null && piece.CurrentTile.Type == Tile.TileType.START) {
 					RedPieceOnHand++;
@@ -188,7 +188,7 @@ public class GameController : MonoBehaviour
 				BluePieceCompleted++;
 			} else {
 				if (piece.CurrentTile != null && (piece.CurrentTile.Type == Tile.TileType.NORMAL
-					|| piece.CurrentTile.Type == Tile.TileType.ROLL_AGAIN)) {
+					|| piece.CurrentTile.Type == Tile.TileType.ROLL_AGAIN || piece.CurrentTile.Type == Tile.TileType.SAFE)) {
 					BluePieceOnBoard++;
 				} else if (piece.CurrentTile != null && piece.CurrentTile.Type == Tile.TileType.START) {
 					BluePieceOnHand++;
