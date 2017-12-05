@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Piece : MonoBehaviour
 {
+    public AudioClip doubleTile;
     public Image Img;
     public Button Btn;
     public Player Owner;
@@ -23,15 +24,27 @@ public class Piece : MonoBehaviour
     public bool IsDone = false;
     public bool IsBlinking = false;
     public float BlinkTimer = 0f;
-
+    PieceSound PS;
+    EatSound ES;
+    private AudioSource source
+    {
+        get
+        {
+            return GetComponent<AudioSource>();
+        }
+    }
     // Use this for initialization
     void Start()
     {
         RT = this.GetComponent<RectTransform>();
         TargetPos = RT.position;
-
+        PS = FindObjectOfType<PieceSound>();
+        ES = FindObjectOfType<EatSound>();
+        gameObject.AddComponent<AudioSource>();
         InitialParent = (RectTransform)RT.parent;
         InitialPosition = RT.position;
+        source.clip = doubleTile;
+        source.playOnAwake = false;
     }
 
     // Update is called once per frame
@@ -102,6 +115,7 @@ public class Piece : MonoBehaviour
         //Eat piece on tile
         if (CurrentTile.PieceOnTile != null)
         {
+            ES.PlaySoundEat();
             if (CurrentTile.PieceOnTile.Owner.PlayerNumber != Owner.PlayerNumber)
             {
                 if (CurrentTile.Type == Tile.TileType.SAFE)
@@ -119,15 +133,20 @@ public class Piece : MonoBehaviour
                 GameController.obj.SetTurnState(GameController.TurnState.ENDED);
                 break;
             case Tile.TileType.SAFE:
+                PlaySound();
+                GameController.obj.ShowMessage(GameController.obj.CurrentPlayerNumber, "Roll Again");
                 GameController.obj.SetTurnState(GameController.TurnState.WAITING_FOR_ROLL);
                 break;
             case Tile.TileType.ROLL_AGAIN:
+                PlaySound();
+                GameController.obj.ShowMessage(GameController.obj.CurrentPlayerNumber, "Roll Again");
                 GameController.obj.SetTurnState(GameController.TurnState.WAITING_FOR_ROLL);
                 break;
             case Tile.TileType.NORMAL:
                 GameController.obj.SetTurnState(GameController.TurnState.ENDED);
                 break;
             case Tile.TileType.END:
+                PS.PlaySounds();
                 OnDone();
                 GameController.obj.SetTurnState(GameController.TurnState.ENDED);
                 break;
@@ -243,5 +262,9 @@ public class Piece : MonoBehaviour
         Btn.interactable = false;
         IsBlinking = false;
         BlinkTimer = 0;
+    }
+    public void PlaySound()
+    {
+        source.PlayOneShot(doubleTile);
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-
 public class GameController : MonoBehaviour
 {
     public enum GameState
@@ -33,7 +32,7 @@ public class GameController : MonoBehaviour
     }
 
     public static GameController obj;
-    public static StartingPlayer FirstPlayer = StartingPlayer.RANDOM;
+    public static StartingPlayer FirstPlayer = StartingPlayer.ONE;
 	public static DiceType TypeOfDice = DiceType.VIRTUAL;
 
     public List<List<Tile>> Map;
@@ -74,14 +73,14 @@ public class GameController : MonoBehaviour
 	public TextMeshProUGUI RedOnHandText;
 	public TextMeshProUGUI BlueOnHandText;
 
-	public static int NumRedPieceCompleted;
+    public NotificationText NotificationText;
+    public static int NumRedPieceCompleted;
 	public static int NumBluePieceCompleted;
 	public static int NumRedPieceOnBoard;
 	public static int NumBluePieceOnBoard;
 	public static int NumRedPieceOnHand;
 	public static int NumBluePieceOnHand;
-
-
+    RollZonkSound RZ;
     private void Awake()
     {
         obj = this;
@@ -118,10 +117,11 @@ public class GameController : MonoBehaviour
             player.PlayerTurnIndicator.SetUp(player);
         }
         RollButtons.interactable = false;
-        
-
         SetDiceDisplay();
         RollsDisplays.Hide();
+
+        RZ = FindObjectOfType<RollZonkSound>();
+        gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -214,6 +214,7 @@ public class GameController : MonoBehaviour
 
     public void NextTurn()
     {
+        CheckGameOver();
         switch (CurrentPlayerNumber)
         {
             case PlayerNumber.ONE:
@@ -225,6 +226,36 @@ public class GameController : MonoBehaviour
         }
         RollsDisplays.Hide();
         RollButtonsToReset.Clear();
+    }
+    public void CheckGameOver()
+    {
+        List<Player> players = new List<Player> { Player1, Player2 };
+        foreach (Player player in players)
+        {
+            bool hasWon = true;
+            foreach (Piece piece in player.Pieces)
+            {
+                hasWon &= piece.IsDone;
+            }
+
+            if (hasWon)
+            {
+                Win(player.PlayerNumber);
+            }
+        }
+    }
+    public void Win(PlayerNumber playerNumber)
+    {
+        State = GameState.GAME_OVER;
+        switch (playerNumber)
+        {
+            case PlayerNumber.ONE:
+                SceneManager.LoadScene("GameOver1");
+                break;
+            case PlayerNumber.TWO:
+                SceneManager.LoadScene("GameOver2");
+                break;
+        }
     }
 
     public void StartTurn(PlayerNumber player)
@@ -260,6 +291,8 @@ public class GameController : MonoBehaviour
 
         if (amount == 0)
         {
+            RZ.PlaySoundZonk();
+            ShowMessage(CurrentPlayerNumber, "Rolled a 0, next turn.");
             NextTurn();
         }
         else
@@ -272,6 +305,7 @@ public class GameController : MonoBehaviour
 
             if (!movePossible)
             {
+                ShowMessage(CurrentPlayerNumber, "No move possible, next turn.");
                 NextTurn();
             }
             else
@@ -280,7 +314,11 @@ public class GameController : MonoBehaviour
             }
         }
     }
-
+    public void ShowMessage(PlayerNumber recipientPlayer, string message)
+    {
+        NotificationText.gameObject.SetActive(true);
+        NotificationText.ShowMessage(recipientPlayer, message);
+    }
     public void INPUT_Rolled(int amount)
     {
         Rolled(amount);

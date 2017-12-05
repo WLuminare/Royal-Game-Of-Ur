@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 114611914781751880}
   - component: {fileID: 114044323387416466}
   - component: {fileID: 114381541943715918}
+  - component: {fileID: 114689717454321048}
+  - component: {fileID: 114810170289467170}
   m_Layer: 5
   m_Name: Piece
   m_TagString: Untagged
@@ -41,16 +43,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d5067a2f88b484bbd5018d330f1720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doubleTile: {fileID: 0}
   Img: {fileID: 0}
+  Btn: {fileID: 0}
   Owner:
     Color: {r: 0, g: 0, b: 0, a: 0}
+    ColorPale: {r: 0, g: 0, b: 0, a: 0}
+    ColorAccent: {r: 0, g: 0, b: 0, a: 0}
+    ColorAccent2: {r: 0, g: 0, b: 0, a: 0}
     Name: 
     Pieces: []
     StartTile: {fileID: 0}
+    PlayerNumber: 0
     PlayerTurnIndicator: {fileID: 0}
   RT: {fileID: 0}
   TargetPos: {x: 0, y: 0}
   TargetTile: {fileID: 0}
+  CurrentTile: {fileID: 0}
+  Moving: 0
+  InitialParent: {fileID: 0}
+  InitialPosition: {x: 0, y: 0}
+  IsDone: 0
+  IsBlinking: 0
+  BlinkTimer: 0
 --- !u!114 &114381541943715918
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -130,6 +145,30 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114689717454321048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1274674539723242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc745d93fef7bf4e89964e3b0a0479d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endTile: {fileID: 8300000, guid: 678238b966499f149bf8fd908df5d775, type: 3}
+--- !u!114 &114810170289467170
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1274674539723242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5145f6f16b871468a0f40c285c04b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eat: {fileID: 8300000, guid: 30bea11ec8830d04cb854014743ae035, type: 3}
 --- !u!222 &222469536275455012
 CanvasRenderer:
   m_ObjectHideFlags: 1
