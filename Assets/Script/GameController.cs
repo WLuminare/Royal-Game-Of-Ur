@@ -66,8 +66,7 @@ public class GameController : MonoBehaviour
     public GameObject DiceVirtual;
     public GameObject DiceVirtual2;
 
-	public TextMeshProUGUI CurrentPlayerText;
-
+    public TextMeshProUGUI CurrentPlayerText;
 
     private void Awake()
     {
@@ -258,26 +257,5 @@ public class GameController : MonoBehaviour
                 DiceVirtual.SetActive(true);
                 break;
         }
-    }
-
-    public void Rolled0()
-    {
-        Rolled(0);
-    }
-    public void Rolled1()
-    {
-        Rolled(1);
-    }
-    public void Rolled2()
-    {
-        Rolled(2);
-    }
-    public void Rolled3()
-    {
-        Rolled(3);
-    }
-    public void Rolled4()
-    {
-        Rolled(4);
     }
 }
