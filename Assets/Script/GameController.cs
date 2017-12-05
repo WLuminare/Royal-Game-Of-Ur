@@ -67,10 +67,31 @@ public class GameController : MonoBehaviour
     public GameObject DiceVirtual2;
 
     public TextMeshProUGUI CurrentPlayerText;
+	public TextMeshProUGUI RedCompletedText;
+	public TextMeshProUGUI BlueCompletedText;
+	public TextMeshProUGUI RedOnBoardText;
+	public TextMeshProUGUI BlueOnBoardText;
+	public TextMeshProUGUI RedOnHandText;
+	public TextMeshProUGUI BlueOnHandText;
+
+	public static int NumRedPieceCompleted;
+	public static int NumBluePieceCompleted;
+	public static int NumRedPieceOnBoard;
+	public static int NumBluePieceOnBoard;
+	public static int NumRedPieceOnHand;
+	public static int NumBluePieceOnHand;
+
 
     private void Awake()
     {
         obj = this;
+
+		NumRedPieceCompleted = 0;
+		NumBluePieceCompleted = 0;
+		NumRedPieceOnBoard = 0;
+		NumBluePieceOnBoard = 0;
+		NumRedPieceOnHand = 7;
+		NumBluePieceOnHand = 7;
 
         Map = new List<List<Tile>>();
         for (int i = 0; i < 3; i++)
@@ -134,8 +155,62 @@ public class GameController : MonoBehaviour
                 }
                 StartTurn(playerToStart);
             }
+
         }
+
+		CheckPlayerPieceStatus ();
     }
+
+	public void CheckPlayerPieceStatus()
+	{
+		int RedPieceCompleted = 0;
+		int BluePieceCompleted = 0;
+		int RedPieceOnBoard = 0;
+		int BluePieceOnBoard = 0;
+		int RedPieceOnHand = 7;
+		int BluePieceOnHand = 7;
+
+		foreach (Piece piece in Player1.Pieces) {
+			if (piece.IsDone) {
+				RedPieceCompleted++;
+			} else {
+				if (piece.CurrentTile != null && (piece.CurrentTile.Type == Tile.TileType.NORMAL
+					|| piece.CurrentTile.Type == Tile.TileType.ROLL_AGAIN)) {
+					RedPieceOnBoard++;
+				} else if (piece.CurrentTile != null && piece.CurrentTile.Type == Tile.TileType.START) {
+					RedPieceOnHand++;
+				}
+			}
+		}
+
+		foreach (Piece piece in Player2.Pieces) {
+			if (piece.IsDone) {
+				BluePieceCompleted++;
+			} else {
+				if (piece.CurrentTile != null && (piece.CurrentTile.Type == Tile.TileType.NORMAL
+					|| piece.CurrentTile.Type == Tile.TileType.ROLL_AGAIN)) {
+					BluePieceOnBoard++;
+				} else if (piece.CurrentTile != null && piece.CurrentTile.Type == Tile.TileType.START) {
+					BluePieceOnHand++;
+				}
+			}
+		}
+
+		NumRedPieceOnBoard = RedPieceOnBoard;
+		NumRedPieceOnHand = RedPieceOnHand - RedPieceOnBoard - RedPieceCompleted;
+		NumRedPieceCompleted = RedPieceCompleted;
+
+		NumBluePieceOnBoard = BluePieceOnBoard;
+		NumBluePieceOnHand = BluePieceOnHand - BluePieceOnBoard - BluePieceCompleted;
+		NumBluePieceCompleted = BluePieceCompleted;
+
+		RedCompletedText.SetText ("Completed\t: " + NumRedPieceCompleted.ToString());
+		BlueCompletedText.SetText ("Completed\t: " + NumBluePieceCompleted.ToString());
+		RedOnBoardText.SetText ("On Board\t: " + NumRedPieceOnBoard.ToString());
+		BlueOnBoardText.SetText ("On Board\t: " + NumBluePieceOnBoard.ToString());
+		RedOnHandText.SetText ("Unused\t: " + NumRedPieceOnHand.ToString());
+		BlueOnHandText.SetText ("Unused\t: " + NumBluePieceOnHand.ToString());
+	}
 
     public void NextTurn()
     {

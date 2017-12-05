@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 19a74953c4b41b3409a54dc7b3e16a4a
+timeCreated: 1512484502
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Mesopotamia
+  fontNames:
+  - Mesopotamia
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
